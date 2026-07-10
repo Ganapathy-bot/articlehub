@@ -7,7 +7,7 @@ const path = require("path");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const { createSupabase } = require("../supabase");
-const { seedFile, pdfsDir, adminUsername, adminPassword, adminEmail } = require("../config");
+const { seedFile, pdfsDir, getAdminSeedConfig } = require("../config");
 const { slugify } = require("../slug");
 
 const dataDir = path.join(__dirname, "..", "..", "data");
@@ -309,10 +309,11 @@ function buildSeedArticles() {
 }
 
 async function seedAll({ force = false } = {}) {
-  const password_hash = await bcrypt.hash(adminPassword, 10);
+  const adminConfig = getAdminSeedConfig();
+  const password_hash = await bcrypt.hash(adminConfig.password, 10);
   const adminUser = {
-    username: String(adminUsername).toLowerCase(),
-    email: String(adminEmail).toLowerCase(),
+    username: adminConfig.username,
+    email: adminConfig.email,
     full_name: "Site Administrator",
     password_hash,
     role: "admin",

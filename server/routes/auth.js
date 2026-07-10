@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const { issueToken, requireAuth, requireAdmin } = require("../auth");
+const { adminUsername } = require("../config");
 const store = require("../db/store");
 
 const router = express.Router();
@@ -41,7 +42,8 @@ router.post("/register", async (req, res) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
       return res.status(400).json({ error: "Invalid email address" });
     }
-    if (u === "admin") {
+    const reservedAdminUsername = String(adminUsername || "").trim().toLowerCase();
+    if (reservedAdminUsername && u === reservedAdminUsername) {
       return res
         .status(400)
         .json({ error: "This username is reserved. Choose another." });

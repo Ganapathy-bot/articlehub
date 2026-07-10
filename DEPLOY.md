@@ -35,8 +35,9 @@ Secrets are stored as **GitHub repository secrets** (not in the repo).
 | `SUPABASE_URL` | `https://unpmthqbuhzdsjrzjskh.supabase.co` |
 | `SUPABASE_ANON_KEY` | (publishable key) |
 | `SUPABASE_SERVICE_ROLE_KEY` | (secret key) |
-| `ADMIN_USERNAME` | `admin` |
-| `ADMIN_PASSWORD` | `admin123` |
+| `ADMIN_USERNAME` | private admin username |
+| `ADMIN_PASSWORD` | private strong password |
+| `ADMIN_EMAIL` | private admin email |
 | `JWT_SECRET` | long random string |
 | `PORT` | (Render sets this automatically — optional) |
 
@@ -63,7 +64,7 @@ docker run -p 5000:5000 --env-file .env articlehub
 | `/` | Public library |
 | `/register` | User registration |
 | `/login` | User / admin login |
-| `/admin` | Admin dashboard (`admin` / `admin123`) |
+| `/admin` | Admin dashboard after admin login |
 
 ## Local production
 

@@ -4,14 +4,14 @@ Production-ready article & PDF library:
 
 - **Supabase** stores articles and registered users
 - **Readers** can browse; **register** to create an account (details in DB)
-- **Admin** (`admin` / `admin123`) has privileges to **add & remove** articles
+- **Admin** accounts are seeded from private environment variables and can **add & remove** articles
 - **Express** serves the API + React production build
 
 ## Roles
 
 | Role | Credentials | Capabilities |
 |------|-------------|--------------|
-| **Admin** | `admin` / `admin123` | Add/remove articles, list users, full dashboard |
+| **Admin** | Private env values | Add/remove articles, list users, full dashboard |
 | **User** | Self-register | Login, browse library (read-only) |
 | **Guest** | — | Browse library without login |
 
@@ -33,8 +33,9 @@ Fill in:
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
+ADMIN_USERNAME=replace-with-private-admin-username
+ADMIN_PASSWORD=replace-with-strong-private-admin-password
+ADMIN_EMAIL=replace-with-private-admin-email
 JWT_SECRET=long-random-string
 PORT=5000
 NODE_ENV=production
@@ -68,12 +69,12 @@ On first start the server **seeds** the admin user and sample articles if empty.
 Or see **[DEPLOY.md](./DEPLOY.md)** for Railway, Docker, and env var details.
 
 1. Run `supabase/schema.sql` in Supabase first
-2. Connect GitHub → set env vars (Supabase keys, admin password, JWT_SECRET)
+2. Connect GitHub -> set env vars (Supabase keys, private admin credentials, JWT_SECRET)
 3. Build: `npm install && npm run build` · Start: `npm start`
 
 ### Important production notes
 
-- Change `ADMIN_PASSWORD` and `JWT_SECRET` after first deploy
+- Set `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `ADMIN_EMAIL`, and `JWT_SECRET` privately before first deploy
 - Use **service_role** key only on the server
 - PDF uploads are stored on the server disk (`public/pdfs`); use a persistent volume on free tiers or migrate to Supabase Storage later
 

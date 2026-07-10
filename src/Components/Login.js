@@ -38,8 +38,8 @@ const Login = () => {
       <div className="admin__card admin__card--narrow">
         <h1>Sign in</h1>
         <p className="admin__lead">
-          <strong>Admin:</strong> username <code>admin</code>, password{" "}
-          <code>admin123</code> (full privileges).
+          Sign in with your registered account. Admin credentials are configured
+          privately by the site owner.
           <br />
           Other users must <Link to="/register">register</Link> first — accounts
           are stored in the database.

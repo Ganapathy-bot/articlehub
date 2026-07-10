@@ -7,7 +7,6 @@ const {
   buildDir,
   pdfsDir,
   supabaseUrl,
-  adminUsername,
   nodeEnv,
 } = require("./config");
 const store = require("./db/store");
@@ -71,7 +70,7 @@ async function start() {
 
   app.listen(port, "0.0.0.0", () => {
     console.log(`ArticleHub LIVE at http://localhost:${port}`);
-    console.log(`Admin: ${adminUsername} / (ADMIN_PASSWORD from .env)`);
+    console.log("Admin credentials loaded from environment variables");
     console.log(`Register: http://localhost:${port}/register`);
     console.log(`Login:    http://localhost:${port}/login`);
     console.log(`Admin:    http://localhost:${port}/admin`);

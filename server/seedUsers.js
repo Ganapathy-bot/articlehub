@@ -1,19 +1,14 @@
 const bcrypt = require("bcryptjs");
 const { createSupabase } = require("./supabase");
-const {
-  adminUsername,
-  adminPassword,
-  adminEmail,
-} = require("./config");
+const { getAdminSeedConfig } = require("./config");
 
 /**
  * Ensures the privileged admin account exists in Supabase `users`.
- * Default: username admin / password admin123
+ * Admin credentials must be provided through private environment variables.
  */
 async function seedAdminUser() {
   const supabase = createSupabase();
-  const username = String(adminUsername).trim().toLowerCase();
-  const email = String(adminEmail).trim().toLowerCase();
+  const { username, password, email } = getAdminSeedConfig();
 
   const { data: existing, error: findError } = await supabase
     .from("users")
@@ -27,10 +22,10 @@ async function seedAdminUser() {
     throw findError;
   }
 
-  const password_hash = await bcrypt.hash(adminPassword, 10);
+  const password_hash = await bcrypt.hash(password, 10);
 
   if (existing) {
-    // Keep admin role and refresh password from env (so admin123 stays in sync)
+    // Keep admin role and refresh the password from the private environment.
     const { error } = await supabase
       .from("users")
       .update({

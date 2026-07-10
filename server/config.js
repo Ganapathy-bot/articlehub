@@ -3,6 +3,29 @@ require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
 const rootDir = path.join(__dirname, "..");
 
+function cleanEnv(value) {
+  return String(value || "").trim();
+}
+
+function getAdminSeedConfig() {
+  const username = cleanEnv(process.env.ADMIN_USERNAME).toLowerCase();
+  const password = String(process.env.ADMIN_PASSWORD || "");
+  const email = cleanEnv(process.env.ADMIN_EMAIL).toLowerCase();
+  const missing = [];
+
+  if (!username) missing.push("ADMIN_USERNAME");
+  if (!password) missing.push("ADMIN_PASSWORD");
+  if (!email) missing.push("ADMIN_EMAIL");
+
+  if (missing.length) {
+    throw new Error(
+      `Missing required admin environment variable(s): ${missing.join(", ")}`
+    );
+  }
+
+  return { username, password, email };
+}
+
 module.exports = {
   port: Number(process.env.PORT) || 5000,
   nodeEnv: process.env.NODE_ENV || "development",
@@ -19,10 +42,10 @@ module.exports = {
     : path.join(rootDir, "public", "pdfs"),
   buildDir: path.join(rootDir, "build"),
   seedFile: path.join(rootDir, "src", "data", "articles.json"),
-  /** Default admin account (seeded into users table if missing) */
-  adminUsername: process.env.ADMIN_USERNAME || "admin",
-  adminPassword: process.env.ADMIN_PASSWORD || "admin123",
-  adminEmail: process.env.ADMIN_EMAIL || "admin@articlehub.local",
+  /** Admin account values are seeded only from private environment variables. */
+  adminUsername: cleanEnv(process.env.ADMIN_USERNAME).toLowerCase(),
+  adminEmail: cleanEnv(process.env.ADMIN_EMAIL).toLowerCase(),
+  getAdminSeedConfig,
   jwtSecret:
     process.env.JWT_SECRET || "articlehub-dev-secret-change-in-production",
   tokenTtlSeconds: Number(process.env.TOKEN_TTL_SECONDS) || 60 * 60 * 24 * 7,
