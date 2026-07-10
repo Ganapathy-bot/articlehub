@@ -1,0 +1,60 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1688 >>
+stream
+BT /F1 11 Tf 50 750 Td (Writing Clear Technical Posts) Tj ET
+BT /F1 11 Tf 50 734 Td (Topic: career) Tj ET
+BT /F1 11 Tf 50 718 Td () Tj ET
+BT /F1 11 Tf 50 702 Td (Good technical writing is about reader outcomes, not author) Tj ET
+BT /F1 11 Tf 50 686 Td (brilliance.) Tj ET
+BT /F1 11 Tf 50 670 Td () Tj ET
+BT /F1 11 Tf 50 654 Td (Open with the problem and who it is for. Promise one clear takeaway.) Tj ET
+BT /F1 11 Tf 50 638 Td (Use short paragraphs and concrete examples. Prefer numbered steps when) Tj ET
+BT /F1 11 Tf 50 622 Td (order matters.) Tj ET
+BT /F1 11 Tf 50 606 Td () Tj ET
+BT /F1 11 Tf 50 590 Td (A simple structure that works:) Tj ET
+BT /F1 11 Tf 50 574 Td () Tj ET
+BT /F1 11 Tf 50 558 Td (1. Hook — why this matters now) Tj ET
+BT /F1 11 Tf 50 542 Td () Tj ET
+BT /F1 11 Tf 50 526 Td (2. Context — what the reader needs to know) Tj ET
+BT /F1 11 Tf 50 510 Td () Tj ET
+BT /F1 11 Tf 50 494 Td (3. Core explanation — diagrams, code, or examples) Tj ET
+BT /F1 11 Tf 50 478 Td () Tj ET
+BT /F1 11 Tf 50 462 Td (4. Pitfalls — common mistakes) Tj ET
+BT /F1 11 Tf 50 446 Td () Tj ET
+BT /F1 11 Tf 50 430 Td (5. Next steps — where to go from here) Tj ET
+BT /F1 11 Tf 50 414 Td () Tj ET
+BT /F1 11 Tf 50 398 Td (Edit ruthlessly. Cut jargon or define it on first use. Read the draft) Tj ET
+BT /F1 11 Tf 50 382 Td (out loud; awkward sentences become obvious.) Tj ET
+BT /F1 11 Tf 50 366 Td () Tj ET
+BT /F1 11 Tf 50 350 Td (If you ship content as PDFs, keep the same outline. Your blog cards) Tj ET
+BT /F1 11 Tf 50 334 Td (should use the title and first paragraph as the description so) Tj ET
+BT /F1 11 Tf 50 318 Td (skimmers can choose quickly.) Tj ET
+BT /F1 11 Tf 50 302 Td () Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001980 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2050
+%%EOF

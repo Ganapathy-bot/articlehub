@@ -1,0 +1,68 @@
+[
+  {
+    "id": "getting-started-with-react",
+    "title": "Getting Started with React",
+    "topic": "tech",
+    "description": "A clear introduction to React components, props, and state for new developers.",
+    "content": "React is a JavaScript library for building user interfaces. You write components — reusable pieces of UI — and compose them into pages.\n\nStart with a function component that returns JSX. Pass data with props. Keep changing data in state with useState. When state updates, React re-renders the component so the UI stays in sync.\n\nRecommended first steps:\n1. Create a Create React App or Vite project.\n2. Build a small counter component.\n3. Split the UI into Navbar, List, and Card components.\n4. Lift shared state up when siblings need the same data.\n\nOnce those feel natural, move on to effects, routing, and data fetching.",
+    "publishedAt": "2026-01-12",
+    "image": "",
+    "pdfUrl": "/pdfs/getting-started-with-react.pdf",
+    "source": "ArticleHub Library"
+  },
+  {
+    "id": "css-layout-fundamentals",
+    "title": "CSS Layout Fundamentals",
+    "topic": "design",
+    "description": "Flexbox and Grid explained with practical patterns for modern page layouts.",
+    "content": "Modern CSS layout is built on Flexbox and Grid.\n\nFlexbox is ideal for one-dimensional layouts: navbars, toolbars, and evenly spaced rows. Use display: flex, justify-content for main-axis alignment, and align-items for the cross axis.\n\nGrid shines for two-dimensional layouts: full pages, card galleries, and dashboards. Define columns with grid-template-columns and place items with grid-column and grid-row.\n\nPractical pattern for a blog:\n- Header: flex row with logo, search, and actions\n- Main: grid of article cards (repeat(auto-fill, minmax(280px, 1fr)))\n- Article body: max-width container with readable line length\n\nPrefer gap over margin hacks, and use relative units (rem, %) so layouts scale cleanly.",
+    "publishedAt": "2026-02-03",
+    "image": "",
+    "pdfUrl": "/pdfs/css-layout-fundamentals.pdf",
+    "source": "ArticleHub Library"
+  },
+  {
+    "id": "writing-clear-technical-posts",
+    "title": "Writing Clear Technical Posts",
+    "topic": "career",
+    "description": "How to structure technical writing so readers finish and remember what you taught.",
+    "content": "Good technical writing is about reader outcomes, not author brilliance.\n\nOpen with the problem and who it is for. Promise one clear takeaway. Use short paragraphs and concrete examples. Prefer numbered steps when order matters.\n\nA simple structure that works:\n1. Hook — why this matters now\n2. Context — what the reader needs to know\n3. Core explanation — diagrams, code, or examples\n4. Pitfalls — common mistakes\n5. Next steps — where to go from here\n\nEdit ruthlessly. Cut jargon or define it on first use. Read the draft out loud; awkward sentences become obvious.\n\nIf you ship content as PDFs, keep the same outline. Your blog cards should use the title and first paragraph as the description so skimmers can choose quickly.",
+    "publishedAt": "2026-02-20",
+    "image": "",
+    "pdfUrl": "/pdfs/writing-clear-technical-posts.pdf",
+    "source": "ArticleHub Library"
+  },
+  {
+    "id": "local-first-web-apps",
+    "title": "Local-First Web Apps",
+    "topic": "tech",
+    "description": "Why shipping content and logic without third-party APIs makes demos and small products more reliable.",
+    "content": "Local-first apps keep core features working without remote services. Content lives in the repo (JSON, Markdown, PDFs). Search and filters run in the browser.\n\nBenefits:\n- No API keys to rotate or leak\n- Offline-friendly demos\n- Predictable performance\n- Easier onboarding for new developers\n\nTrade-offs:\n- You maintain the content catalog\n- No live third-party news feeds\n- Updates require a rebuild or content deploy\n\nArticleHub in this project follows that model: articles come from src/data/articles.json, optional PDFs live under public/pdfs/, and topic search is pure client-side filtering.",
+    "publishedAt": "2026-03-08",
+    "image": "",
+    "pdfUrl": "/pdfs/local-first-web-apps.pdf",
+    "source": "ArticleHub Library"
+  },
+  {
+    "id": "color-and-typography-basics",
+    "title": "Color and Typography Basics",
+    "topic": "design",
+    "description": "Pick readable type and a small color system that makes blog cards feel consistent.",
+    "content": "Typography and color do most of the visual work on a content site.\n\nType tips:\n- One sans-serif family for UI is enough for most blogs\n- Body text around 16–18px with line-height 1.5–1.7\n- Limit article width (~65–75 characters) for comfort\n- Use clear hierarchy: page title, section headings, body, captions\n\nColor tips:\n- Start with neutrals (background, text, muted text, borders)\n- Add one accent for links and primary buttons\n- Topic chips can use a soft tint of the accent\n- Check contrast; dark gray on white beats pure black for long reading\n\nCard UI works well with white surfaces, soft shadows, and a topic badge. Avoid noisy backgrounds behind body text.",
+    "publishedAt": "2026-03-22",
+    "image": "",
+    "pdfUrl": "/pdfs/color-and-typography-basics.pdf",
+    "source": "ArticleHub Library"
+  },
+  {
+    "id": "building-a-reading-habit",
+    "title": "Building a Reading Habit",
+    "topic": "career",
+    "description": "Practical habits for reading more technical material without burning out.",
+    "content": "Reading widely compounds skills, but only if the habit sticks.\n\nTry this weekly cadence:\n- Pick 3 topics you care about this month\n- Schedule two 25-minute reading blocks on calendar\n- Capture 3 bullets per article: idea, example, action\n- Share one insight with a teammate or in a notes doc\n\nFilter aggressively. If a post does not match your current project or goal, skip it. Topic-based browsing (like this app) helps you stay intentional instead of doom-scrolling a global feed.\n\nPair reading with doing: after a tech article, change one line of code in a side project. After a career piece, update your resume bullet or portfolio note the same day.",
+    "publishedAt": "2026-04-01",
+    "image": "",
+    "pdfUrl": "/pdfs/building-a-reading-habit.pdf",
+    "source": "ArticleHub Library"
+  }
+]

@@ -1,0 +1,92 @@
+.home__page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(900px, 92%);
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+.home__page--compact {
+  min-height: auto;
+}
+
+.hero__message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__message > h2 {
+  font-size: 64px;
+  margin: 0;
+}
+
+.hero__message > h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  width: 100%;
+  line-height: 1.15em;
+  margin: 0 auto;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: rgb(17, 17, 17);
+}
+
+.hero__message > p {
+  padding: 16px 0 0;
+  line-height: 1.6em;
+  width: min(520px, 100%);
+  margin: 0 auto;
+  font-size: 16px;
+  color: rgb(60, 60, 60);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.hero__button {
+  display: inline-block;
+  min-width: 160px;
+  padding: 15px 20px;
+  border: none;
+  background: rgb(17, 17, 17);
+  font-family: "Inter", sans-serif;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.hero__button--ghost {
+  background: #f2f2f2;
+  color: #111;
+}
+
+.home__hint {
+  font-size: 13px !important;
+  color: rgb(100, 100, 100) !important;
+  padding-top: 18px !important;
+}
+
+.home__hint code {
+  font-size: 12px;
+  background: #f2f2f2;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.home__skip {
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgb(80, 80, 80);
+}

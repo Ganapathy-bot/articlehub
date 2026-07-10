@@ -1,0 +1,59 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1596 >>
+stream
+BT /F1 11 Tf 50 750 Td (Color and Typography Basics) Tj ET
+BT /F1 11 Tf 50 734 Td (Topic: design) Tj ET
+BT /F1 11 Tf 50 718 Td () Tj ET
+BT /F1 11 Tf 50 702 Td (Typography and color do most of the visual work on a content site.) Tj ET
+BT /F1 11 Tf 50 686 Td () Tj ET
+BT /F1 11 Tf 50 670 Td (Type tips:) Tj ET
+BT /F1 11 Tf 50 654 Td () Tj ET
+BT /F1 11 Tf 50 638 Td (- One sans-serif family for UI is enough for most blogs) Tj ET
+BT /F1 11 Tf 50 622 Td () Tj ET
+BT /F1 11 Tf 50 606 Td (- Body text around 16–18px with line-height 1.5–1.7) Tj ET
+BT /F1 11 Tf 50 590 Td () Tj ET
+BT /F1 11 Tf 50 574 Td (- Limit article width \(~65–75 characters\) for comfort) Tj ET
+BT /F1 11 Tf 50 558 Td () Tj ET
+BT /F1 11 Tf 50 542 Td (- Use clear hierarchy: page title, section headings, body, captions) Tj ET
+BT /F1 11 Tf 50 526 Td () Tj ET
+BT /F1 11 Tf 50 510 Td (Color tips:) Tj ET
+BT /F1 11 Tf 50 494 Td () Tj ET
+BT /F1 11 Tf 50 478 Td (- Start with neutrals \(background, text, muted text, borders\)) Tj ET
+BT /F1 11 Tf 50 462 Td () Tj ET
+BT /F1 11 Tf 50 446 Td (- Add one accent for links and primary buttons) Tj ET
+BT /F1 11 Tf 50 430 Td () Tj ET
+BT /F1 11 Tf 50 414 Td (- Topic chips can use a soft tint of the accent) Tj ET
+BT /F1 11 Tf 50 398 Td () Tj ET
+BT /F1 11 Tf 50 382 Td (- Check contrast; dark gray on white beats pure black for long reading) Tj ET
+BT /F1 11 Tf 50 366 Td () Tj ET
+BT /F1 11 Tf 50 350 Td (Card UI works well with white surfaces, soft shadows, and a topic) Tj ET
+BT /F1 11 Tf 50 334 Td (badge. Avoid noisy backgrounds behind body text.) Tj ET
+BT /F1 11 Tf 50 318 Td () Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001888 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1958
+%%EOF

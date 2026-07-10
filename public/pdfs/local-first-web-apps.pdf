@@ -1,0 +1,60 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1538 >>
+stream
+BT /F1 11 Tf 50 750 Td (Local-First Web Apps) Tj ET
+BT /F1 11 Tf 50 734 Td (Topic: tech) Tj ET
+BT /F1 11 Tf 50 718 Td () Tj ET
+BT /F1 11 Tf 50 702 Td (Local-first apps keep core features working without remote services.) Tj ET
+BT /F1 11 Tf 50 686 Td (Content lives in the repo \(JSON, Markdown, PDFs\). Search and filters) Tj ET
+BT /F1 11 Tf 50 670 Td (run in the browser.) Tj ET
+BT /F1 11 Tf 50 654 Td () Tj ET
+BT /F1 11 Tf 50 638 Td (Benefits:) Tj ET
+BT /F1 11 Tf 50 622 Td () Tj ET
+BT /F1 11 Tf 50 606 Td (- No API keys to rotate or leak) Tj ET
+BT /F1 11 Tf 50 590 Td () Tj ET
+BT /F1 11 Tf 50 574 Td (- Offline-friendly demos) Tj ET
+BT /F1 11 Tf 50 558 Td () Tj ET
+BT /F1 11 Tf 50 542 Td (- Predictable performance) Tj ET
+BT /F1 11 Tf 50 526 Td () Tj ET
+BT /F1 11 Tf 50 510 Td (- Easier onboarding for new developers) Tj ET
+BT /F1 11 Tf 50 494 Td () Tj ET
+BT /F1 11 Tf 50 478 Td (Trade-offs:) Tj ET
+BT /F1 11 Tf 50 462 Td () Tj ET
+BT /F1 11 Tf 50 446 Td (- You maintain the content catalog) Tj ET
+BT /F1 11 Tf 50 430 Td () Tj ET
+BT /F1 11 Tf 50 414 Td (- No live third-party news feeds) Tj ET
+BT /F1 11 Tf 50 398 Td () Tj ET
+BT /F1 11 Tf 50 382 Td (- Updates require a rebuild or content deploy) Tj ET
+BT /F1 11 Tf 50 366 Td () Tj ET
+BT /F1 11 Tf 50 350 Td (BlogMania in this project follows that model: articles come from) Tj ET
+BT /F1 11 Tf 50 334 Td (src/data/articles.json, optional PDFs live under public/pdfs/, and) Tj ET
+BT /F1 11 Tf 50 318 Td (topic search is pure client-side filtering.) Tj ET
+BT /F1 11 Tf 50 302 Td () Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001830 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1900
+%%EOF
