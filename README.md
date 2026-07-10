@@ -55,28 +55,21 @@ npm start
 
 On first start the server **seeds** the admin user and sample articles if empty.
 
-## 4. Push to GitHub & deploy
+## 4. GitHub & deploy
 
-```bash
-git init
-git add .
-git commit -m "ArticleHub production ready"
-git branch -M main
-git remote add origin https://github.com/YOUR_USER/articlehub.git
-git push -u origin main
-```
+**Live repo:** https://github.com/Ganapathy-bot/articlehub
 
-**Never commit `.env`** (already in `.gitignore`).
+**Never commit `.env`** (already in `.gitignore`). Secrets live in GitHub repo secrets / host env vars.
 
-### Deploy on Render / Railway / Heroku-style hosts
+### Deploy on Render (one click)
 
-1. Connect the GitHub repo
-2. **Build:** `npm install && npm run build`
-3. **Start:** `npm start` → `node server/index.js`
-4. Set the same env vars as `.env.example` in the host dashboard
-5. `PORT` is usually injected by the host automatically
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Ganapathy-bot/articlehub)
 
-A sample `render.yaml` and `Procfile` are included.
+Or see **[DEPLOY.md](./DEPLOY.md)** for Railway, Docker, and env var details.
+
+1. Run `supabase/schema.sql` in Supabase first
+2. Connect GitHub → set env vars (Supabase keys, admin password, JWT_SECRET)
+3. Build: `npm install && npm run build` · Start: `npm start`
 
 ### Important production notes
 

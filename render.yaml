@@ -1,11 +1,13 @@
-# Optional Render.com blueprint — set env vars in the dashboard
+# Render Blueprint
+# Deploy: https://render.com/deploy?repo=https://github.com/Ganapathy-bot/articlehub
 services:
   - type: web
     name: articlehub
-    env: node
+    runtime: node
     plan: free
     buildCommand: npm install && npm run build
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
