@@ -2,14 +2,12 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-const { createSupabase } = require("../supabase");
-const { toArticle } = require("../mappers");
 const { requireAdmin } = require("../auth");
 const { slugify } = require("../slug");
 const { pdfsDir } = require("../config");
+const store = require("../db/store");
 
 const router = express.Router();
-const supabase = createSupabase();
 
 if (!fs.existsSync(pdfsDir)) {
   fs.mkdirSync(pdfsDir, { recursive: true });
@@ -21,8 +19,7 @@ const storage = multer.diskStorage({
     const safe = file.originalname
       .replace(/[^a-zA-Z0-9._-]/g, "_")
       .replace(/_+/g, "_");
-    const stamp = Date.now();
-    cb(null, `${stamp}-${safe}`);
+    cb(null, `${Date.now()}-${safe}`);
   },
 });
 
@@ -41,68 +38,33 @@ const upload = multer({
   },
 });
 
-/** GET /api/articles?topic=&q= — public read */
 router.get("/", async (req, res) => {
   try {
-    const { topic, q } = req.query;
-    let query = supabase
-      .from("articles")
-      .select(
-        "slug, title, topic, description, content, published_at, image, pdf_url, source"
-      )
-      .order("published_at", { ascending: false });
-
-    if (topic && topic !== "all") {
-      query = query.eq("topic", String(topic).toLowerCase());
-    }
-
-    if (q && String(q).trim()) {
-      const term = String(q).trim().replace(/%/g, "\\%");
-      query = query.or(
-        `title.ilike.%${term}%,description.ilike.%${term}%,content.ilike.%${term}%,topic.ilike.%${term}%,source.ilike.%${term}%`
-      );
-    }
-
-    const { data, error } = await query;
-    if (error) throw error;
-
-    res.json((data || []).map(toArticle));
+    const articles = await store.listArticles({
+      topic: req.query.topic,
+      q: req.query.q,
+    });
+    res.json(articles);
   } catch (err) {
     console.error("GET /api/articles failed:", err);
-    res.status(500).json({
-      error: "Failed to load articles from Supabase",
-      detail: err.message || String(err),
-    });
+    res.status(500).json({ error: "Failed to load articles", detail: err.message });
   }
 });
 
-/** GET /api/articles/topics — public read */
 router.get("/topics", async (_req, res) => {
   try {
-    const { data, error } = await supabase.from("articles").select("topic");
-    if (error) throw error;
-
-    const topics = Array.from(
-      new Set((data || []).map((r) => r.topic).filter(Boolean))
-    ).sort();
-
-    res.json(["all", ...topics]);
+    res.json(await store.getTopics());
   } catch (err) {
     console.error("GET /api/articles/topics failed:", err);
-    res.status(500).json({
-      error: "Failed to load topics from Supabase",
-      detail: err.message || String(err),
-    });
+    res.status(500).json({ error: "Failed to load topics", detail: err.message });
   }
 });
 
-/** POST /api/articles — admin only (JSON or multipart with optional PDF) */
 router.post("/", requireAdmin, (req, res) => {
   upload.single("pdf")(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ error: err.message || "Upload failed" });
     }
-
     try {
       const title = (req.body.title || "").trim();
       if (!title) {
@@ -110,24 +72,11 @@ router.post("/", requireAdmin, (req, res) => {
         return res.status(400).json({ error: "Title is required" });
       }
 
-      let slug = slugify(req.body.slug || title);
-      if (!slug) slug = `article-${Date.now()}`;
-
-      // Ensure unique slug
-      const { data: existing } = await supabase
-        .from("articles")
-        .select("slug")
-        .eq("slug", slug)
-        .maybeSingle();
-      if (existing) {
-        slug = `${slug}-${Date.now()}`;
-      }
+      let slug = slugify(req.body.slug || title) || `article-${Date.now()}`;
+      const existing = await store.getArticleBySlug(slug);
+      if (existing) slug = `${slug}-${Date.now()}`;
 
       const pdfFilename = req.file ? req.file.filename : "";
-      const pdfUrl = pdfFilename
-        ? `/api/files/${encodeURIComponent(pdfFilename)}`
-        : "";
-
       const row = {
         slug,
         title,
@@ -138,96 +87,62 @@ router.post("/", requireAdmin, (req, res) => {
           req.body.publishedAt || new Date().toISOString().slice(0, 10),
         image: (req.body.image || "").trim(),
         pdf_filename: pdfFilename,
-        pdf_url: pdfUrl,
+        pdf_url: pdfFilename
+          ? `/api/files/${encodeURIComponent(pdfFilename)}`
+          : "",
         source: (req.body.source || "ArticleHub Library").trim(),
       };
 
-      const { data, error } = await supabase
-        .from("articles")
-        .insert(row)
-        .select(
-          "slug, title, topic, description, content, published_at, image, pdf_url, source"
-        )
-        .single();
-
-      if (error) {
-        if (req.file) fs.unlinkSync(req.file.path);
-        throw error;
-      }
-
-      res.status(201).json(toArticle(data));
+      const article = await store.createArticle(row);
+      res.status(201).json(article);
     } catch (e) {
+      if (req.file) {
+        try {
+          fs.unlinkSync(req.file.path);
+        } catch (_) {
+          /* ignore */
+        }
+      }
       console.error("POST /api/articles failed:", e);
-      res.status(500).json({
-        error: "Failed to create article",
-        detail: e.message || String(e),
-      });
+      res.status(500).json({ error: "Failed to create article", detail: e.message });
     }
   });
 });
 
-/** DELETE /api/articles/:id — admin only */
 router.delete("/:id", requireAdmin, async (req, res) => {
   try {
-    const slug = req.params.id;
-    const { data: article, error: findError } = await supabase
-      .from("articles")
-      .select("slug, pdf_filename")
-      .eq("slug", slug)
-      .maybeSingle();
-
-    if (findError) throw findError;
+    const article = await store.deleteArticle(req.params.id);
     if (!article) {
       return res.status(404).json({ error: "Article not found" });
     }
-
-    const { error } = await supabase.from("articles").delete().eq("slug", slug);
-    if (error) throw error;
-
-    if (article.pdf_filename) {
-      const filePath = path.join(pdfsDir, path.basename(article.pdf_filename));
+    const filename = article.pdf_filename;
+    if (filename) {
+      const filePath = path.join(pdfsDir, path.basename(filename));
       if (fs.existsSync(filePath)) {
         try {
           fs.unlinkSync(filePath);
-        } catch (unlinkErr) {
-          console.warn("Could not delete PDF file:", unlinkErr.message);
+        } catch (e) {
+          console.warn("Could not delete PDF:", e.message);
         }
       }
     }
-
-    res.json({ ok: true, deleted: slug });
+    res.json({ ok: true, deleted: req.params.id });
   } catch (err) {
     console.error("DELETE /api/articles/:id failed:", err);
-    res.status(500).json({
-      error: "Failed to delete article",
-      detail: err.message || String(err),
-    });
+    res.status(500).json({ error: "Failed to delete article", detail: err.message });
   }
 });
 
-/** GET /api/articles/:id — public read */
 router.get("/:id", async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from("articles")
-      .select(
-        "slug, title, topic, description, content, published_at, image, pdf_url, source"
-      )
-      .eq("slug", req.params.id)
-      .maybeSingle();
-
-    if (error) throw error;
-    if (!data) {
+    const article = await store.getArticleBySlug(req.params.id);
+    if (!article) {
       return res.status(404).json({ error: "Article not found" });
     }
-
-    res.json(toArticle(data));
+    res.json(article);
   } catch (err) {
     console.error("GET /api/articles/:id failed:", err);
-    res.status(500).json({
-      error: "Failed to load article from Supabase",
-      detail: err.message || String(err),
-    });
+    res.status(500).json({ error: "Failed to load article", detail: err.message });
   }
 });
 

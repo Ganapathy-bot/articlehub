@@ -10,9 +10,7 @@ const {
   adminUsername,
   nodeEnv,
 } = require("./config");
-const { assertConfig, createSupabase } = require("./supabase");
-const { seedArticles } = require("./seed");
-const { seedAdminUser } = require("./seedUsers");
+const store = require("./db/store");
 const articlesRouter = require("./routes/articles");
 const filesRouter = require("./routes/files");
 const authRouter = require("./routes/auth");
@@ -24,23 +22,11 @@ app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/api/health", async (_req, res) => {
-  let supabaseStatus = "not_configured";
-  try {
-    assertConfig();
-    const supabase = createSupabase();
-    const { error } = await supabase
-      .from("articles")
-      .select("slug", { head: true, count: "exact" });
-    supabaseStatus = error ? `error: ${error.message}` : "connected";
-  } catch (err) {
-    supabaseStatus = `error: ${err.message}`;
-  }
-
   res.json({
     ok: true,
     app: "ArticleHub",
     env: nodeEnv,
-    supabase: supabaseStatus,
+    storage: store.getMode(),
     supabaseUrl: supabaseUrl || null,
     roles: {
       user: "register + login, read articles",
@@ -73,42 +59,26 @@ if (fs.existsSync(buildDir)) {
 async function start() {
   console.log("ArticleHub server starting…");
   console.log(`NODE_ENV=${nodeEnv}`);
-  assertConfig();
-  console.log(`Supabase URL: ${supabaseUrl}`);
-
-  try {
-    const supabase = createSupabase();
-    const { error: aErr } = await supabase
-      .from("articles")
-      .select("slug", { head: true, count: "exact" });
-    if (aErr) throw new Error(`articles: ${aErr.message}`);
-    const { error: uErr } = await supabase
-      .from("users")
-      .select("id", { head: true, count: "exact" });
-    if (uErr) throw new Error(`users: ${uErr.message}`);
-    console.log("Connected to Supabase (articles + users)");
-  } catch (err) {
-    console.error("\n❌ Supabase connection / tables failed.");
-    console.error(`   ${err.message}`);
-    console.error("\n1. Run supabase/schema.sql in Supabase SQL Editor");
-    console.error("2. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env\n");
-    process.exit(1);
-  }
+  console.log(`Supabase URL: ${supabaseUrl || "(not set)"}`);
 
   if (!fs.existsSync(pdfsDir)) {
     fs.mkdirSync(pdfsDir, { recursive: true });
   }
 
-  await seedAdminUser();
-  await seedArticles({ force: process.env.SEED_FORCE === "1" });
+  const mode = await store.detectMode();
+  console.log(`Storage mode: ${mode}`);
+  await store.seedAll({ force: process.env.SEED_FORCE === "1" });
 
-  app.listen(port, () => {
-    console.log(`ArticleHub running at http://localhost:${port}`);
-    console.log(`Admin login: username "${adminUsername}" (password from ADMIN_PASSWORD)`);
-    console.log(`Register:    http://localhost:${port}/register`);
-    console.log(`Login:       http://localhost:${port}/login`);
-    console.log(`Admin panel: http://localhost:${port}/admin`);
+  app.listen(port, "0.0.0.0", () => {
+    console.log(`ArticleHub LIVE at http://localhost:${port}`);
+    console.log(`Admin: ${adminUsername} / (ADMIN_PASSWORD from .env)`);
+    console.log(`Register: http://localhost:${port}/register`);
+    console.log(`Login:    http://localhost:${port}/login`);
+    console.log(`Admin:    http://localhost:${port}/admin`);
   });
 }
 
-start();
+start().catch((err) => {
+  console.error("Failed to start:", err);
+  process.exit(1);
+});

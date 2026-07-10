@@ -11,6 +11,9 @@
 # production build (regenerated on deploy)
 /build
 
+# local JSON tables (created at runtime if Supabase schema not applied)
+/data/
+
 # misc
 .DS_Store
 .env

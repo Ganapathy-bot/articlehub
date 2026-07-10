@@ -1,10 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const { createSupabase } = require("../supabase");
 const { issueToken, requireAuth, requireAdmin } = require("../auth");
+const store = require("../db/store");
 
 const router = express.Router();
-const supabase = createSupabase();
 
 function publicUser(row) {
   return {
@@ -16,7 +15,6 @@ function publicUser(row) {
   };
 }
 
-/** POST /api/auth/register — regular users only (role forced to user) */
 router.post("/register", async (req, res) => {
   try {
     const { username, email, password, fullName } = req.body || {};
@@ -50,26 +48,13 @@ router.post("/register", async (req, res) => {
     }
 
     const password_hash = await bcrypt.hash(p, 10);
-    const { data, error } = await supabase
-      .from("users")
-      .insert({
-        username: u,
-        email: e,
-        full_name: name || u,
-        password_hash,
-        role: "user",
-      })
-      .select("id, username, email, full_name, role")
-      .single();
-
-    if (error) {
-      if (error.code === "23505" || /duplicate|unique/i.test(error.message)) {
-        return res
-          .status(409)
-          .json({ error: "Username or email already registered" });
-      }
-      throw error;
-    }
+    const data = await store.createUser({
+      username: u,
+      email: e,
+      full_name: name || u,
+      password_hash,
+      role: "user",
+    });
 
     const token = issueToken(data);
     res.status(201).json({
@@ -78,15 +63,14 @@ router.post("/register", async (req, res) => {
       message: "Registration successful",
     });
   } catch (err) {
+    if (err.code === "23505" || /already registered|duplicate|unique/i.test(err.message)) {
+      return res.status(409).json({ error: "Username or email already registered" });
+    }
     console.error("POST /api/auth/register failed:", err);
-    res.status(500).json({
-      error: "Registration failed",
-      detail: err.message || String(err),
-    });
+    res.status(500).json({ error: "Registration failed", detail: err.message });
   }
 });
 
-/** POST /api/auth/login — user or admin (from users table) */
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body || {};
@@ -99,14 +83,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Username and password required" });
     }
 
-    // Admin can sign in with username "admin" (case-insensitive)
-    const { data: user, error } = await supabase
-      .from("users")
-      .select("id, username, email, full_name, role, password_hash")
-      .eq("username", u)
-      .maybeSingle();
-
-    if (error) throw error;
+    const user = await store.findUserByUsername(u);
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
@@ -129,14 +106,10 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.error("POST /api/auth/login failed:", err);
-    res.status(500).json({
-      error: "Login failed",
-      detail: err.message || String(err),
-    });
+    res.status(500).json({ error: "Login failed", detail: err.message });
   }
 });
 
-/** GET /api/auth/me — any logged-in user */
 router.get("/me", requireAuth, (req, res) => {
   res.json({
     id: req.user.uid,
@@ -147,18 +120,11 @@ router.get("/me", requireAuth, (req, res) => {
   });
 });
 
-/** GET /api/auth/users — admin only: list registered users */
 router.get("/users", requireAdmin, async (_req, res) => {
   try {
-    const { data, error } = await supabase
-      .from("users")
-      .select("id, username, email, full_name, role, created_at")
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
-
+    const data = await store.listUsers();
     res.json(
-      (data || []).map((row) => ({
+      data.map((row) => ({
         id: row.id,
         username: row.username,
         email: row.email,
@@ -169,10 +135,7 @@ router.get("/users", requireAdmin, async (_req, res) => {
     );
   } catch (err) {
     console.error("GET /api/auth/users failed:", err);
-    res.status(500).json({
-      error: "Failed to list users",
-      detail: err.message || String(err),
-    });
+    res.status(500).json({ error: "Failed to list users", detail: err.message });
   }
 });
 
